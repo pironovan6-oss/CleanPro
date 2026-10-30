@@ -1,0 +1,1422 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>CleanPro — клининговая компания</title>
+<style>
+:root{--primary:#0e7c86;--primary-dark:#0a5f67;--accent:#f7b731;--bg:#f5f8fa;--card:#fff;--text:#22313f;--muted:#6b7c8a;--border:#e2e9ee;--danger:#d64545;--success:#2e9e5b;--radius:10px;--shadow:0 2px 10px rgba(20,50,70,.07)}
+*{box-sizing:border-box}
+body{margin:0;font-family:"Segoe UI",Arial,sans-serif;background:var(--bg);color:var(--text);line-height:1.55}
+a{color:var(--primary);text-decoration:none}
+a:hover{text-decoration:underline}
+.container{max-width:1140px;margin:0 auto;padding:0 20px}
+.header{background:var(--card);border-bottom:1px solid var(--border);position:sticky;top:0;z-index:50}
+.header__inner{display:flex;align-items:center;gap:24px;height:66px}
+.logo{font-size:24px;font-weight:800;color:var(--text);letter-spacing:-.5px}
+.logo span{color:var(--primary)}
+.logo--footer{color:#fff}
+.logo--footer span{color:var(--accent)}
+.nav{display:flex;align-items:center;gap:18px;margin-left:auto;flex-wrap:wrap}
+.nav a{color:var(--text);font-weight:500;font-size:15px}
+.nav a:hover{color:var(--primary);text-decoration:none}
+.nav a.active{color:var(--primary);font-weight:700}
+.nav__muted{color:var(--muted)!important;font-size:14px}
+.badge{background:var(--accent);color:#3b2c00;font-size:11px;font-weight:700;padding:1px 6px;border-radius:10px;margin-left:4px}
+.burger{display:none;background:none;border:0;font-size:24px;cursor:pointer;color:var(--text)}
+.btn{display:inline-block;background:var(--primary);color:#fff!important;padding:10px 20px;border:0;border-radius:var(--radius);font-size:15px;font-weight:600;cursor:pointer;transition:background .15s;font-family:inherit}
+.btn:hover{background:var(--primary-dark);text-decoration:none}
+.btn--sm{padding:7px 14px;font-size:14px}
+.btn--accent{background:var(--accent);color:#3b2c00!important}
+.btn--accent:hover{background:#e5a41f}
+.btn--ghost{background:transparent;color:var(--primary)!important;border:1px solid var(--primary)}
+.btn--ghost:hover{background:var(--primary);color:#fff!important}
+.btn--danger{background:var(--danger)}
+.btn--danger:hover{background:#b73939}
+.btn--block{display:block;width:100%;text-align:center}
+.alert{padding:12px 16px;border-radius:var(--radius);margin:16px 0;font-size:15px;border-left:4px solid;background:var(--card)}
+.alert--success{border-color:var(--success);color:var(--success)}
+.alert--danger{border-color:var(--danger);color:var(--danger)}
+.alert--warning{border-color:var(--accent);color:#9a6b00}
+.alert--info{border-color:var(--primary);color:var(--primary)}
+.hero{background:linear-gradient(135deg,var(--primary) 0%,#12a0ab 100%);color:#fff;padding:70px 0}
+.hero h1{font-size:42px;margin:0 0 16px;line-height:1.2}
+.hero p{font-size:18px;opacity:.92;max-width:620px;margin:0 0 28px}
+.hero__actions{display:flex;gap:12px;flex-wrap:wrap}
+.hero .btn--ghost{color:#fff!important;border-color:rgba(255,255,255,.7)}
+.hero .btn--ghost:hover{background:#fff;color:var(--primary)!important}
+.section{padding:56px 0}
+.section--alt{background:var(--card)}
+.section__title{font-size:30px;margin:0 0 8px}
+.section__subtitle{color:var(--muted);margin:0 0 32px;font-size:16px}
+.grid{display:grid;gap:20px}
+.grid--4{grid-template-columns:repeat(4,1fr)}
+.grid--3{grid-template-columns:repeat(3,1fr)}
+.grid--2{grid-template-columns:repeat(2,1fr)}
+.card{background:var(--card);border:1px solid var(--border);border-radius:var(--radius);padding:22px;box-shadow:var(--shadow)}
+.card--link{transition:transform .15s,box-shadow .15s;display:block}
+.card--link:hover{transform:translateY(-3px);box-shadow:0 8px 22px rgba(20,50,70,.12);text-decoration:none}
+.card h3{margin:0 0 8px;font-size:19px;color:var(--text)}
+.card p{margin:0;color:var(--muted);font-size:15px}
+.card__meta{display:flex;justify-content:space-between;align-items:center;margin-top:16px;gap:10px}
+.price{font-size:22px;font-weight:800;color:var(--primary)}
+.price small{font-size:13px;color:var(--muted);font-weight:500}
+.badge-status{display:inline-block;padding:3px 10px;border-radius:20px;font-size:12px;font-weight:700;white-space:nowrap}
+.badge-status--new{background:#fff3d6;color:#9a6b00}
+.badge-status--confirmed{background:#dff1ff;color:#1668a8}
+.badge-status--in_progress{background:#e8e2ff;color:#5a3fc0}
+.badge-status--done{background:#dcf5e6;color:var(--success)}
+.badge-status--cancelled{background:#fde4e4;color:var(--danger)}
+.rating{color:var(--accent);font-weight:700}
+.form__row{margin-bottom:16px}
+.form__row label{display:block;font-weight:600;font-size:14px;margin-bottom:6px}
+.input{width:100%;padding:10px 12px;border:1px solid var(--border);border-radius:8px;font-size:15px;font-family:inherit;background:#fff}
+.input:focus{outline:none;border-color:var(--primary);box-shadow:0 0 0 3px rgba(14,124,134,.12)}
+.form__error{color:var(--danger);font-size:13px;margin-top:4px}
+.checkbox-row{display:flex;align-items:center;gap:8px;font-size:15px}
+.checkbox-row input{width:auto}
+.form{max-width:460px}
+.filters{background:var(--card);border:1px solid var(--border);border-radius:var(--radius);padding:16px;display:flex;gap:12px;flex-wrap:wrap;align-items:end;margin-bottom:24px}
+.filters .form__row{margin:0;flex:1;min-width:150px}
+.chips{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:24px}
+.chip{padding:6px 14px;background:var(--card);border:1px solid var(--border);border-radius:20px;font-size:14px;color:var(--text);cursor:pointer}
+.chip:hover{border-color:var(--primary);text-decoration:none}
+.chip--active{background:var(--primary);color:#fff;border-color:var(--primary)}
+.table{width:100%;border-collapse:collapse;background:var(--card);border-radius:var(--radius);overflow:hidden;box-shadow:var(--shadow)}
+.table th,.table td{padding:12px 14px;text-align:left;border-bottom:1px solid var(--border);font-size:14px;vertical-align:middle}
+.table th{background:#eef3f6;font-size:13px;text-transform:uppercase;letter-spacing:.4px;color:var(--muted)}
+.table tr:last-child td{border-bottom:0}
+.table tr:hover td{background:#fafcfd}
+.layout{display:grid;grid-template-columns:230px 1fr;gap:24px;padding:30px 0;align-items:start}
+.sidebar{background:var(--card);border:1px solid var(--border);border-radius:var(--radius);padding:12px;position:sticky;top:86px}
+.sidebar a{display:block;padding:10px 12px;border-radius:8px;color:var(--text);font-size:15px;margin-bottom:2px;cursor:pointer}
+.sidebar a:hover{background:#eef5f6;text-decoration:none}
+.sidebar a.active{background:var(--primary);color:#fff}
+.sidebar__title{font-size:12px;text-transform:uppercase;color:var(--muted);padding:8px 12px 4px;letter-spacing:.5px}
+.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin-bottom:26px}
+.stat{background:var(--card);border:1px solid var(--border);border-radius:var(--radius);padding:18px}
+.stat__value{font-size:28px;font-weight:800;color:var(--primary)}
+.stat__label{color:var(--muted);font-size:14px}
+.page-head{padding:40px 0 0}
+.page-head h1{font-size:32px;margin:0 0 6px}
+.page-head p{color:var(--muted);margin:0}
+.breadcrumb{font-size:14px;color:var(--muted);margin-bottom:12px}
+.review{background:var(--card);border:1px solid var(--border);border-radius:var(--radius);padding:18px;margin-bottom:14px}
+.review__head{display:flex;justify-content:space-between;margin-bottom:6px;gap:10px}
+.review__author{font-weight:700}
+.review__date{color:var(--muted);font-size:13px}
+.review p{margin:6px 0 0;font-size:15px}
+.cart-row{display:flex;justify-content:space-between;align-items:center;gap:16px;padding:16px;background:var(--card);border:1px solid var(--border);border-radius:var(--radius);margin-bottom:12px;flex-wrap:wrap}
+.cart-row input[type=number]{width:90px;padding:8px;border:1px solid var(--border);border-radius:8px;font-family:inherit}
+.cart-total{display:flex;justify-content:space-between;font-size:22px;font-weight:800;padding:18px;background:var(--card);border:2px solid var(--primary);border-radius:var(--radius);margin:20px 0}
+.calc{display:grid;grid-template-columns:1.2fr .8fr;gap:24px;align-items:start}
+.calc__result{background:var(--primary);color:#fff;border-radius:var(--radius);padding:26px;position:sticky;top:86px}
+.calc__result h3{margin-top:0}
+.calc__total{font-size:38px;font-weight:800;margin:10px 0 4px}
+.calc__hint{font-size:14px;opacity:.85}
+.footer{background:#16323c;color:#cfe0e6;margin-top:60px;padding:40px 0 18px}
+.footer__inner{display:grid;grid-template-columns:2fr 1fr 1fr;gap:30px}
+.footer h4{color:#fff;margin:0 0 12px;font-size:15px}
+.footer a{display:block;color:#cfe0e6;margin-bottom:8px;font-size:14px}
+.footer__text{font-size:14px;line-height:1.7;margin:8px 0 0}
+.footer__copy{border-top:1px solid rgba(255,255,255,.12);margin-top:26px;padding-top:16px;font-size:13px;opacity:.7}
+.main{min-height:60vh}
+.empty{text-align:center;padding:60px 20px;color:var(--muted)}
+.empty h3{color:var(--text)}
+.row-actions{display:flex;gap:8px;flex-wrap:wrap}
+.mt{margin-top:24px}
+.right{text-align:right}
+@media(max-width:900px){
+.grid--3,.grid--4{grid-template-columns:repeat(2,1fr)}
+.layout{grid-template-columns:1fr}
+.sidebar{position:static;display:flex;flex-wrap:wrap;gap:4px}
+.sidebar__title{display:none}
+.stats{grid-template-columns:repeat(2,1fr)}
+.calc{grid-template-columns:1fr}
+.calc__result{position:static}
+.footer__inner{grid-template-columns:1fr}
+}
+@media(max-width:680px){
+.burger{display:block;margin-left:auto}
+.nav{display:none;position:absolute;top:66px;left:0;right:0;background:var(--card);flex-direction:column;align-items:flex-start;padding:16px 20px;border-bottom:1px solid var(--border);gap:14px}
+.nav.open{display:flex}
+.hero h1{font-size:30px}
+.grid--3,.grid--4,.grid--2{grid-template-columns:1fr}
+.table{display:block;overflow-x:auto}
+}
+</style>
+</head>
+<body>
+
+<header class="header">
+  <div class="container header__inner">
+    <a href="#/" class="logo">Clean<span>Pro</span></a>
+    <nav class="nav" id="nav"></nav>
+    <button class="burger" id="burger" aria-label="Меню">☰</button>
+  </div>
+</header>
+
+<div id="flash"></div>
+<main class="main" id="app"></main>
+
+<footer class="footer">
+  <div class="container footer__inner">
+    <div>
+      <div class="logo logo--footer">Clean<span>Pro</span></div>
+      <p class="footer__text">Профессиональная уборка квартир, офисов и химчистка мебели.</p>
+    </div>
+    <div>
+      <h4>Разделы</h4>
+      <a href="#/services">Каталог услуг</a>
+      <a href="#/calculator">Калькулятор</a>
+      <a href="#/about">О компании</a>
+      <a href="#/contacts">Контакты</a>
+    </div>
+    <div>
+      <h4>Контакты</h4>
+      <p class="footer__text">г. Москва, ул. Чистая, 12<br>+7 (495) 123-45-67<br>info@cleanpro.ru</p>
+    </div>
+  </div>
+  <div class="container footer__copy">© 2026 CleanPro. Демонстрационная версия (работает без сервера).</div>
+</footer>
+
+<script>
+"use strict";
+
+/* ============================================================
+   ДАННЫЕ: хранилище localStorage + стартовый набор
+   ============================================================ */
+var KEY = "cleanpro_db_v1";
+
+function hashPass(s) {
+  var h = 5381;
+  for (var i = 0; i < s.length; i++) h = ((h << 5) + h + s.charCodeAt(i)) >>> 0;
+  return "h" + h.toString(16);
+}
+
+var SEED_CATEGORIES = [
+  { id: 1, name: "Уборка квартир", slug: "klyening-kvartir", description: "Комплексная и поддерживающая уборка квартир любой площади." },
+  { id: 2, name: "Уборка офисов", slug: "klyening-ofisov", description: "Поддержание чистоты в офисных помещениях по графику." },
+  { id: 3, name: "Химчистка мебели", slug: "khimchistka-mebeli", description: "Выездная чистка мягкой мебели с профессиональным оборудованием." },
+  { id: 4, name: "Мойка техники", slug: "moyka-tekhniki", description: "Профессиональная чистка бытовой техники на дому." }
+];
+
+var SEED_SERVICES = [
+  { id: 1, cat: 1, name: "Генеральная уборка", slug: "generalnaya-uborka", price: 120, unit: "м²", duration: "от 4 часов", active: true, desc: "Полная уборка всех помещений: потолки, стены, мебель, сантехника, окна." },
+  { id: 2, cat: 1, name: "Поддерживающая уборка", slug: "poderzhivayushchaya-uborka", price: 70, unit: "м²", duration: "от 2 часов", active: true, desc: "Регулярная уборка по поддержанию чистоты: пыль, полы, кухня, ванная." },
+  { id: 3, cat: 1, name: "Уборка после ремонта", slug: "uborka-posle-remonta", price: 160, unit: "м²", duration: "от 6 часов", active: true, desc: "Удаление строительной пыли, следов краски и клея, вынос мусора." },
+  { id: 4, cat: 1, name: "Мытьё окон", slug: "mytye-okon", price: 250, unit: "шт.", duration: "от 30 минут", active: true, desc: "Внутренние и наружные поверхности, рамы, подоконники." },
+  { id: 5, cat: 2, name: "Ежедневная уборка офиса", slug: "ezhednevnaya-uborka-ofisa", price: 55, unit: "м²", duration: "по графику", active: true, desc: "Половые покрытия, рабочие места, кухня, санузлы." },
+  { id: 6, cat: 2, name: "Генеральная уборка офиса", slug: "generalnaya-uborka-ofisa", price: 110, unit: "м²", duration: "от 3 часов", active: true, desc: "Углублённая уборка раз в месяц: плинтусы, вентиляция, мебель." },
+  { id: 7, cat: 2, name: "Уборка переговорных", slug: "uborka-peregovornyh", price: 90, unit: "м²", duration: "от 1 часа", active: true, desc: "Столы, кресла, экраны, стеклянные перегородки." },
+  { id: 8, cat: 3, name: "Чистка дивана", slug: "chistka-divana", price: 900, unit: "шт.", duration: "от 2 часов", active: true, desc: "Экстракторная чистка, удаление пятен и запахов." },
+  { id: 9, cat: 3, name: "Чистка кресла", slug: "chistka-kresla", price: 600, unit: "шт.", duration: "от 1 часа", active: true, desc: "Глубокая чистка ткани и каркаса." },
+  { id: 10, cat: 3, name: "Чистка матраса", slug: "chistka-matrasa", price: 800, unit: "шт.", duration: "от 1,5 часов", active: true, desc: "Удаление пылевых клещей, пятен, дезинфекция." },
+  { id: 11, cat: 4, name: "Мойка стиральной машины", slug: "moyka-stiralnoy-mashiny", price: 1500, unit: "шт.", duration: "1 час", active: true, desc: "Чистка барабана, манжеты, сливного шланга, дезинфекция." },
+  { id: 12, cat: 4, name: "Мойка холодильника", slug: "moyka-holodilnika", price: 1200, unit: "шт.", duration: "1 час", active: true, desc: "Разморозка, чистка камер, удаление запахов." },
+  { id: 13, cat: 4, name: "Мойка посудомоечной машины", slug: "moyka-posudomoechnoy-mashiny", price: 1300, unit: "шт.", duration: "45 минут", active: true, desc: "Чистка фильтров, форсунок, камеры сушки." }
+];
+
+var STATUS = {
+  "new": "Новая",
+  "confirmed": "Подтверждена",
+  "in_progress": "В работе",
+  "done": "Выполнена",
+  "cancelled": "Отменена"
+};
+
+var LS = null;
+try { LS = window.localStorage; } catch (e) { LS = null; }
+
+function seedDB() {
+  var now = Date.now();
+  function ago(ms) { return new Date(now - ms).toISOString(); }
+  var DAY = 86400000;
+
+  return {
+    seq: { user: 3, service: 14, order: 3, review: 3 },
+    categories: SEED_CATEGORIES.slice(),
+    services: SEED_SERVICES.slice(),
+    users: [
+      { id: 1, name: "Администратор", email: "admin@cleanpro.ru", phone: "", role: "admin", pass: hashPass("admin123"), created: ago(90 * DAY) },
+      { id: 2, name: "Иван Демо", email: "client@demo.ru", phone: "+7 (999) 111-22-33", role: "client", pass: hashPass("demo1234"), created: ago(30 * DAY) }
+    ],
+    orders: [
+      {
+        id: 1, user: 2, status: "done",
+        address: "г. Москва, ул. Ленина, д. 10, кв. 5",
+        comment: "Нужно успеть к приезду гостей",
+        total: 7200, created: ago(5 * DAY), closed: ago(4 * DAY),
+        items: [{ service: 1, q: 60, price: 120 }]
+      },
+      {
+        id: 2, user: 2, status: "in_progress",
+        address: "г. Москва, пр-т Мира, д. 42, офис 301",
+        comment: "Химчистка дивана и матраса",
+        total: 1700, created: ago(1 * DAY), closed: null,
+        items: [{ service: 8, q: 1, price: 900 }, { service: 10, q: 1, price: 800 }]
+      }
+    ],
+    reviews: [
+      {
+        id: 1, user: 2, service: 1, rating: 5, published: true, created: ago(3 * DAY),
+        text: "Работой довольны, убрали идеально и очень аккуратно. Обязательно обратимся снова."
+      },
+      {
+        id: 2, user: 2, service: 8, rating: 4, published: false, created: ago(6 * 3600000),
+        text: "Диван как новый. Чуть дольше, чем обещали, но результат отличный."
+      }
+    ],
+    cart: {},
+    session: null
+  };
+}
+
+var db;
+try {
+  db = JSON.parse(LS ? LS.getItem(KEY) : null) || null;
+} catch (e) { db = null; }
+if (!db || !db.services) db = seedDB();
+
+function save() {
+  try { if (LS) LS.setItem(KEY, JSON.stringify(db)); } catch (e) {}
+}
+
+function nextId(kind) { return db.seq[kind]++; }
+
+/* ---------- утилиты ---------- */
+function esc(s) {
+  return String(s == null ? "" : s)
+    .replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;").replace(/'/g, "&#39;");
+}
+function money(n) {
+  return Math.round(Number(n) || 0).toLocaleString("ru-RU") + " ₽";
+}
+function cat(id) {
+  for (var i = 0; i < db.categories.length; i++) if (db.categories[i].id === id) return db.categories[i];
+  return null;
+}
+function svc(id) {
+  for (var i = 0; i < db.services.length; i++) if (db.services[i].id === Number(id)) return db.services[i];
+  return null;
+}
+function svcBySlug(slug) {
+  for (var i = 0; i < db.services.length; i++) if (db.services[i].slug === slug) return db.services[i];
+  return null;
+}
+function order(id) {
+  for (var i = 0; i < db.orders.length; i++) if (db.orders[i].id === Number(id)) return db.orders[i];
+  return null;
+}
+function user(id) {
+  for (var i = 0; i < db.users.length; i++) if (db.users[i].id === Number(id)) return db.users[i];
+  return null;
+}
+function me() { return db.session ? user(db.session) : null; }
+function isAdmin() { var u = me(); return !!u && u.role === "admin"; }
+function ratingOf(serviceId) {
+  var sum = 0, n = 0;
+  db.reviews.forEach(function (r) {
+    if (r.service === serviceId && r.published) { sum += r.rating; n++; }
+  });
+  return n ? { value: Math.round((sum / n) * 10) / 10, count: n } : null;
+}
+function stars(v) {
+  if (!v) return '<span class="rating" style="color:#cfd8de">★★★★★</span>';
+  return '<span class="rating">★ ' + v + "</span>";
+}
+function plural(n, one, few, many) {
+  var m10 = n % 10, m100 = n % 100;
+  if (m10 === 1 && m100 !== 11) return one;
+  if (m10 >= 2 && m10 <= 4 && (m100 < 10 || m100 >= 20)) return few;
+  return many;
+}
+function fmtDate(d) {
+  var dt = new Date(d);
+  if (isNaN(dt)) return d;
+  var p = function (x) { return (x < 10 ? "0" : "") + x; };
+  return p(dt.getDate()) + "." + p(dt.getMonth() + 1) + "." + dt.getFullYear() + " " + p(dt.getHours()) + ":" + p(dt.getMinutes());
+}
+function cartCount() {
+  var n = 0;
+  for (var k in db.cart) n++;
+  return n;
+}
+function cartRows() {
+  var rows = [], total = 0;
+  for (var k in db.cart) {
+    var s = svc(k);
+    if (!s || !s.active) continue;
+    var q = db.cart[k], sub = s.price * q;
+    total += sub;
+    rows.push({ s: s, q: q, sub: sub });
+  }
+  rows.sort(function (a, b) { return a.s.name.localeCompare(b.s.name, "ru"); });
+  return { rows: rows, total: total };
+}
+
+/* ---------- всплывающие сообщения ---------- */
+var flashQueue = [];
+var flashTimer = null;
+function flash(msg, type) {
+  flashQueue.push({ msg: msg, type: type || "info" });
+  paintFlash();
+}
+function paintFlash() {
+  if (!flashQueue.length) return;
+  var el = document.getElementById("flash");
+  el.innerHTML = '<div class="container">' + flashQueue.map(function (f) {
+    return '<div class="alert alert--' + f.type + '">' + esc(f.msg) + "</div>";
+  }).join("") + "</div>";
+  flashQueue = [];
+  if (flashTimer) clearTimeout(flashTimer);
+  flashTimer = setTimeout(function () {
+    document.getElementById("flash").innerHTML = "";
+  }, 5000);
+}
+
+/* ============================================================
+   СТРАНИЦЫ
+   ============================================================ */
+function pageHome() {
+  var cats = db.categories.map(function (c) {
+    var n = db.services.filter(function (s) { return s.cat === c.id && s.active; }).length;
+    return '<a class="card card--link" href="#/services?category=' + c.slug + '">' +
+      "<h3>" + esc(c.name) + "</h3><p>" + esc(c.description) + "</p>" +
+      '<div class="card__meta"><span class="price" style="font-size:16px">' + n + " " + plural(n, "услуга", "услуги", "услуг") + "</span></div></a>";
+  }).join("");
+
+  var top = db.services.filter(function (s) { return s.active; }).slice(0, 6).map(function (s) {
+    var r = ratingOf(s.id);
+    return '<a class="card card--link" href="#/service/' + s.slug + '">' +
+      "<h3>" + esc(s.name) + "</h3><p>" + esc(s.desc.slice(0, 110)) + (s.desc.length > 110 ? "…" : "") + "</p>" +
+      '<div class="card__meta"><span class="price">' + money(s.price) + ' <small>/ ' + esc(s.unit) + "</small></span>" +
+      (r ? stars(r.value) : "") + "</div></a>";
+  }).join("");
+
+  var revs = db.reviews.filter(function (r) { return r.published; }).slice(-3).reverse().map(function (rv) {
+    var s = svc(rv.service), u = user(rv.user);
+    return '<div class="review"><div class="review__head"><span class="review__author">' + esc(u ? u.name : "Клиент") +
+      '</span><span class="rating">★ ' + rv.rating + "</span></div>" +
+      '<div class="review__date">' + esc(s ? s.name : "") + "</div><p>" + esc(rv.text || "Без комментария") + "</p></div>";
+  }).join("");
+
+  return '<section class="hero"><div class="container">' +
+    "<h1>Чистота в доме и офисе — без ваших усилий</h1>" +
+    "<p>Профессиональная уборка квартир и офисов, химчистка мебели и мойка бытовой техники. Работаем по договору, гарантия качества.</p>" +
+    '<div class="hero__actions"><a class="btn btn--accent" href="#/services">Выбрать услугу</a>' +
+    '<a class="btn btn--ghost" href="#/calculator">Рассчитать стоимость</a></div>' +
+    "</div></section>" +
+
+    '<section class="section"><div class="container">' +
+    '<h2 class="section__title">Каталог услуг</h2><p class="section__subtitle">Направления, в которых мы работаем</p>' +
+    '<div class="grid grid--4">' + cats + "</div></div></section>" +
+
+    '<section class="section section--alt"><div class="container">' +
+    '<h2 class="section__title">Популярные услуги</h2><p class="section__subtitle">Что заказывают чаще всего</p>' +
+    '<div class="grid grid--3">' + top + "</div></div></section>" +
+
+    '<section class="section"><div class="container">' +
+    '<h2 class="section__title">Почему выбирают нас</h2><p class="section__subtitle">Коротко о преимуществах</p>' +
+    '<div class="grid grid--3">' +
+    '<div class="card"><h3>Проверенные специалисты</h3><p>Все сотрудники проходят обучение и работают с профессиональной химией.</p></div>' +
+    '<div class="card"><h3>Прозрачные цены</h3><p>Стоимость известна заранее — калькулятор на сайте считает бюджет до выезда.</p></div>' +
+    '<div class="card"><h3>Гарантия результата</h3><p>Если что-то сделано не так — переделываем бесплатно в течение 24 часов.</p></div>' +
+    "</div></div></section>" +
+
+    (revs ? '<section class="section section--alt"><div class="container">' +
+      '<h2 class="section__title">Отзывы клиентов</h2><p class="section__subtitle">Мнения тех, кто уже пользовался нашими услугами</p>' +
+      '<div class="grid grid--3">' + revs + "</div></div></section>" : "");
+}
+
+function pageServices(q) {
+  var list = db.services.filter(function (s) { return s.active; });
+  var cur = null;
+
+  if (q.category) {
+    for (var i = 0; i < db.categories.length; i++)
+      if (db.categories[i].slug === q.category) cur = db.categories[i];
+    if (cur) list = list.filter(function (s) { return s.cat === cur.id; });
+  }
+  if (q.q) {
+    var needle = q.q.toLowerCase();
+    list = list.filter(function (s) { return s.name.toLowerCase().indexOf(needle) >= 0; });
+  }
+  if (q.price_min) list = list.filter(function (s) { return s.price >= Number(q.price_min); });
+  if (q.price_max) list = list.filter(function (s) { return s.price <= Number(q.price_max); });
+
+  if (q.sort === "price_desc") list.sort(function (a, b) { return b.price - a.price; });
+  else if (q.sort === "price_asc") list.sort(function (a, b) { return a.price - b.price; });
+  else list.sort(function (a, b) { return a.name.localeCompare(b.name, "ru"); });
+
+  var chips = '<a class="chip ' + (cur ? "" : "chip--active") + '" href="#/services">Все услуги</a>' +
+    db.categories.map(function (c) {
+      return '<a class="chip ' + (cur && cur.id === c.id ? "chip--active" : "") + '" href="#/services?category=' + c.slug + '">' + esc(c.name) + "</a>";
+    }).join("");
+
+  var filters = '<form class="filters" data-form="filter">' +
+    (cur ? '<input type="hidden" name="category" value="' + cur.slug + '">' : "") +
+    '<div class="form__row"><label>Поиск</label><input class="input" name="q" value="' + esc(q.q || "") + '" placeholder="Название услуги"></div>' +
+    '<div class="form__row"><label>Цена от</label><input class="input" type="number" name="price_min" min="0" value="' + esc(q.price_min || "") + '"></div>' +
+    '<div class="form__row"><label>Цена до</label><input class="input" type="number" name="price_max" min="0" value="' + esc(q.price_max || "") + '"></div>' +
+    '<div class="form__row"><label>Сортировка</label><select class="input" name="sort">' +
+    '<option value="name"' + (!q.sort || q.sort === "name" ? " selected" : "") + ">По названию</option>" +
+    '<option value="price_asc"' + (q.sort === "price_asc" ? " selected" : "") + ">Сначала дешёвые</option>" +
+    '<option value="price_desc"' + (q.sort === "price_desc" ? " selected" : "") + ">Сначала дорогие</option>" +
+    "</select></div>" +
+    '<button class="btn" type="submit">Применить</button>' +
+    '<a class="btn btn--ghost" href="#/services">Сбросить</a></form>';
+
+  var cards = list.map(function (s) {
+    var r = ratingOf(s.id);
+    return '<div class="card"><div style="display:flex;justify-content:space-between;gap:8px;align-items:start">' +
+      "<h3><a href=\"#/service/" + s.slug + '">' + esc(s.name) + "</a></h3>" + (r ? stars(r.value) : "") + "</div>" +
+      "<p>" + esc(s.desc.slice(0, 100)) + (s.desc.length > 100 ? "…" : "") + "</p>" +
+      '<div class="card__meta"><span class="price">' + money(s.price) + ' <small>/ ' + esc(s.unit) + "</small></span>" +
+      '<a class="btn btn--sm" href="#/service/' + s.slug + '">Подробнее</a></div></div>';
+  }).join("");
+
+  var subtitle = (cur ? esc(cur.name) + " — " : (q.q ? "Поиск: «" + esc(q.q) + "» — " : "")) +
+    "всего услуг: " + list.length;
+
+  return '<div class="page-head"><div class="container"><h1>Каталог услуг</h1><p>' + subtitle + "</p></div></div>" +
+    '<section class="section"><div class="container">' + '<div class="chips">' + chips + "</div>" + filters +
+    (list.length
+      ? '<div class="grid grid--3">' + cards + "</div>"
+      : '<div class="empty"><h3>Ничего не найдено</h3><p>Попробуйте изменить параметры поиска.</p><a class="btn" href="#/services">Показать все услуги</a></div>') +
+    "</div></section>";
+}
+
+function pageService(slug) {
+  var s = svcBySlug(slug);
+  if (!s) return pageError(404, "Услуга не найдена");
+  var c = cat(s.cat);
+  var r = ratingOf(s.id);
+  var revs = db.reviews.filter(function (x) { return x.service === s.id && x.published; }).reverse();
+
+  var revHtml = revs.length ? revs.map(function (rv) {
+    var u = user(rv.user);
+    return '<div class="review"><div class="review__head"><span class="review__author">' + esc(u ? u.name : "Клиент") +
+      '</span><span class="rating">★ ' + rv.rating + "</span></div>" +
+      '<div class="review__date">' + fmtDate(rv.created) + "</div><p>" + esc(rv.text || "Без комментария") + "</p></div>";
+  }).join("") : '<div class="empty"><p>Отзывов пока нет — станьте первым.</p></div>';
+
+  var form = me()
+    ? '<form data-form="review" data-slug="' + s.slug + '">' +
+      '<div class="form__row"><label>Оценка</label><select class="input" name="rating">' +
+      '<option value="5">5 — отлично</option><option value="4">4 — хорошо</option><option value="3">3 — нормально</option>' +
+      '<option value="2">2 — плохо</option><option value="1">1 — ужасно</option></select></div>' +
+      '<div class="form__row"><label>Отзыв</label><textarea class="input" rows="4" name="text" placeholder="Расскажите о качестве услуги"></textarea></div>' +
+      '<button class="btn btn--block" type="submit">Отправить отзыв</button></form>'
+    : '<p style="color:var(--muted)">Чтобы оставить отзыв, <a href="#/login">войдите</a> в аккаунт.</p>';
+
+  return '<div class="page-head"><div class="container">' +
+    '<div class="breadcrumb"><a href="#/services">Каталог</a> / <a href="#/services?category=' + c.slug + '">' + esc(c.name) + "</a> / " + esc(s.name) + "</div>" +
+    "<h1>" + esc(s.name) + "</h1><p>" + esc(c.name) + "</p></div></div>" +
+
+    '<section class="section"><div class="container">' +
+    '<div class="grid grid--2" style="align-items:start">' +
+    '<div class="card"><p>' + esc(s.desc) + "</p>" +
+    '<div class="card__meta" style="margin-top:22px"><span class="price">' + money(s.price) + " <small>/ " + esc(s.unit) + "</small></span>" +
+    (r ? '<span class="rating">★ ' + r.value + ' <span style="color:var(--muted);font-weight:400">(' + r.count + ")</span></span>"
+       : '<span style="color:var(--muted)">Пока нет отзывов</span>') + "</div>" +
+    (s.duration ? '<p style="margin-top:14px;color:var(--muted)">Продолжительность: ' + esc(s.duration) + "</p>" : "") +
+    "</div>" +
+    '<div class="card"><h3>Добавить в заявку</h3>' +
+    '<form data-form="add" data-id="' + s.id + '">' +
+    '<div class="form__row"><label>Количество (' + esc(s.unit) + ')</label>' +
+    '<input class="input" type="number" name="quantity" value="1" min="0.1" step="0.1"></div>' +
+    '<button class="btn btn--block" type="submit">Добавить в заявку</button></form>' +
+    '<p style="margin-top:14px;font-size:14px;color:var(--muted)">Итоговую стоимость и адрес вы укажете на шаге оформления заявки.</p>' +
+    "</div></div>" +
+
+    '<h2 class="section__title" style="margin-top:44px">Отзывы (' + revs.length + ")</h2>" +
+    '<div class="grid grid--2" style="align-items:start"><div>' + revHtml + "</div>" +
+    '<div class="card"><h3>Оставить отзыв</h3>' + form + "</div></div>" +
+    "</div></section>";
+}
+
+function pageCalculator() {
+  var list = db.services.filter(function (s) { return s.active; })
+    .sort(function (a, b) { return a.cat - b.cat || a.price - b.price; });
+
+  var html = "", lastCat = -1;
+  list.forEach(function (s) {
+    if (s.cat !== lastCat) {
+      lastCat = s.cat;
+      var c = cat(s.cat);
+      html += '<h3 style="margin:26px 0 12px">' + esc(c ? c.name : "") + "</h3>";
+    }
+    html += '<div class="cart-row" data-price="' + s.price + '">' +
+      "<div><strong>" + esc(s.name) + '</strong><div style="font-size:14px;color:var(--muted)">' +
+      money(s.price) + " / " + esc(s.unit) + (s.duration ? " · " + esc(s.duration) : "") + "</div></div>" +
+      '<form data-form="add" data-id="' + s.id + '" style="display:flex;align-items:center;gap:14px">' +
+      '<label style="font-size:14px;color:var(--muted)">Кол-во <input type="number" name="quantity" value="1" min="0.1" step="0.1" data-qty></label>' +
+      '<strong data-subtotal style="min-width:110px;text-align:right">' + money(s.price) + "</strong>" +
+      '<button class="btn btn--sm" type="submit">В заявку</button></form></div>';
+  });
+
+  return '<div class="page-head"><div class="container"><h1>Калькулятор стоимости</h1>' +
+    "<p>Укажите объём работ — предварительная цена появится справа</p></div></div>" +
+    '<section class="section"><div class="container"><div class="calc"><div>' + html + "</div>" +
+    '<div class="calc__result"><h3>Предварительная стоимость</h3>' +
+    '<div class="calc__total" data-total>0 ₽</div>' +
+    '<p class="calc__hint">Расчёт носит ориентировочный характер. Точная сумма подтверждается после осмотра объекта.</p></div></div>' +
+    '<p style="margin-top:24px;color:var(--muted)">Готово? <a href="#/cart">Перейти к оформлению заявки →</a></p>' +
+    "</div></section>";
+}
+
+function pageCart() {
+  var data = cartRows();
+  var body;
+  if (!data.rows.length) {
+    body = '<div class="empty"><h3>Заявка пуста</h3><p>Выберите услуги в каталоге или рассчитайте стоимость в калькуляторе.</p>' +
+      '<a class="btn" href="#/services">Перейти в каталог</a></div>';
+  } else {
+    body = data.rows.map(function (row) {
+      return '<div class="cart-row"><div><strong><a href="#/service/' + row.s.slug + '">' + esc(row.s.name) + "</a></strong>" +
+        '<div style="font-size:14px;color:var(--muted)">' + money(row.s.price) + " / " + esc(row.s.unit) + "</div></div>" +
+        '<form data-form="cart-update" data-id="' + row.s.id + '" style="display:flex;align-items:center;gap:14px">' +
+        '<input type="number" name="quantity" value="' + row.q + '" min="0" step="0.1">' +
+        '<strong style="min-width:110px;text-align:right">' + money(row.sub) + "</strong>" +
+        '<button class="btn btn--sm btn--ghost" type="submit">Обновить</button></form>' +
+        '<button class="btn btn--sm btn--danger" data-action="cart-remove" data-id="' + row.s.id + '">×</button></div>';
+    }).join("") +
+      '<div class="cart-total"><span>Итого</span><span>' + money(data.total) + "</span></div>" +
+      '<div class="row-actions"><a class="btn" href="#/checkout">Оформить заявка</a>' +
+      '<button class="btn btn--ghost" data-action="cart-clear">Очистить</button>' +
+      '<a class="btn btn--ghost" href="#/services">Добавить ещё услуги</a></div>';
+  }
+
+  return '<div class="page-head"><div class="container"><h1>Ваша заявка</h1>' +
+    "<p>Выбранные услуги и предварительная стоимость</p></div></div>" +
+    '<section class="section"><div class="container">' + body + "</div></section>";
+}
+
+function pageCheckout() {
+  var data = cartRows();
+  if (!data.rows.length) {
+    flash("Корзина пуста. Сначала выберите услуги.", "warning");
+    location.hash = "#/services";
+    return "";
+  }
+  if (!me()) {
+    flash("Оформить заявку может только зарегистрированный клиент.", "warning");
+    location.hash = "#/login";
+    return "";
+  }
+
+  var summary = data.rows.map(function (row) {
+    return '<div style="display:flex;justify-content:space-between;padding:8px 0;border-bottom:1px solid var(--border)">' +
+      "<span>" + esc(row.s.name) + " × " + row.q + "</span><strong>" + money(row.sub) + "</strong></div>";
+  }).join("") +
+    '<div class="cart-total" style="margin-bottom:0"><span>Итого</span><span>' + money(data.total) + "</span></div>";
+
+  return '<div class="page-head"><div class="container"><h1>Оформление заявки</h1>' +
+    "<p>Укажите адрес и комментарий — остальное мы уточним по телефону</p></div></div>" +
+    '<section class="section"><div class="container"><div class="grid grid--2" style="align-items:start">' +
+    '<form class="form card" data-form="checkout">' +
+    '<div class="form__row"><label>Адрес объекта</label><input class="input" name="address" placeholder="г. Москва, ул. Ленина, д. 10, кв. 5"><div class="form__error" data-err="address"></div></div>' +
+    '<div class="form__row"><label>Комментарий</label><textarea class="input" rows="4" name="comment" placeholder="Пожелания по времени, особые условия"></textarea></div>' +
+    '<button class="btn btn--block" type="submit">Оформить заявку</button>' +
+    '<a class="btn btn--ghost btn--block" href="#/cart" style="margin-top:10px">Назад к заявке</a></form>' +
+    '<div class="card"><h3>Состав заявки</h3>' + summary + "</div>" +
+    "</div></div></section>";
+}
+
+function pageCabinet() {
+  if (!me()) { location.hash = "#/login"; return ""; }
+  var mine = db.orders.filter(function (o) { return o.user === db.session; })
+    .sort(function (a, b) { return b.created - a.created ? (b.id - a.id) : (b.id - a.id); });
+
+  var active = mine.filter(function (o) { return ["new", "confirmed", "in_progress"].indexOf(o.status) >= 0; }).length;
+  var done = mine.filter(function (o) { return o.status === "done"; }).length;
+
+  var rows = mine.map(function (o) {
+    return "<tr><td><strong>" + o.id + "</strong></td><td>" + fmtDate(o.created) + "</td><td>" + esc(o.address) +
+      "</td><td>" + money(o.total) + '</td><td><span class="badge-status badge-status--' + o.status + '">' + STATUS[o.status] + "</span></td>" +
+      '<td><a class="btn btn--sm btn--ghost" href="#/order/' + o.id + '">Открыть</a></td></tr>';
+  }).join("");
+
+  var table = mine.length
+    ? '<table class="table"><thead><tr><th>№</th><th>Дата</th><th>Адрес</th><th>Сумма</th><th>Статус</th><th></th></tr></thead><tbody>' + rows + "</tbody></table>"
+    : '<div class="empty"><h3>Заявок пока нет</h3><p>Создайте первую заявку в каталоге услуг.</p><a class="btn" href="#/services">Выбрать услуги</a></div>';
+
+  var u = me();
+  return '<div class="page-head"><div class="container"><h1>Личный кабинет</h1><p>' + esc(u.name) + " · " + esc(u.email) + "</p></div></div>" +
+    '<section class="section"><div class="container">' +
+    '<div class="stats">' +
+    '<div class="stat"><div class="stat__value">' + mine.length + '</div><div class="stat__label">всего заявок</div></div>' +
+    '<div class="stat"><div class="stat__value">' + active + '</div><div class="stat__label">в работе</div></div>' +
+    '<div class="stat"><div class="stat__value">' + done + '</div><div class="stat__label">выполнено</div></div>' +
+    '<div class="stat"><div class="stat__value"><a href="#/my-reviews">→</a></div><div class="stat__label">мои отзывы</div></div>' +
+    "</div>" +
+    '<div class="row-actions" style="margin-bottom:20px"><a class="btn" href="#/services">Новая заявка</a>' +
+    '<a class="btn btn--ghost" href="#/cart">Корзина заявки</a><a class="btn btn--ghost" href="#/my-reviews">Мои отзывы</a></div>' +
+    '<h2 class="section__title">Мои заявки</h2>' + table + "</div></section>";
+}
+
+function pageOrder(id) {
+  var o = order(id);
+  if (!o) return pageError(404, "Заявка не найдена");
+  if (!isAdmin() && o.user !== db.session) return pageError(403, "Это чужая заявка");
+
+  var items = o.items.map(function (it) {
+    var s = svc(it.service);
+    return "<tr><td>" + esc(s ? s.name : "—") + "</td><td>" + it.q + "</td><td>" + money(it.price) +
+      "</td><td>" + money(it.price * it.q) + "</td></tr>";
+  }).join("");
+
+  var u = user(o.user);
+  var canCancel = o.status === "new" || o.status === "confirmed";
+
+  return '<div class="page-head"><div class="container">' +
+    '<div class="breadcrumb"><a href="#/cabinet">Личный кабинет</a> / Заявка №' + o.id + "</div>" +
+    "<h1>Заявка №" + o.id + '</h1><p>' + fmtDate(o.created) + ' · <span class="badge-status badge-status--' + o.status + '">' + STATUS[o.status] + "</span></p></div></div>" +
+    '<section class="section"><div class="container"><div class="grid grid--2" style="align-items:start">' +
+    '<div class="card"><h3>Состав заявки</h3>' +
+    '<table class="table" style="box-shadow:none;margin-top:10px"><thead><tr><th>Услуга</th><th>Кол-во</th><th>Цена</th><th>Сумма</th></tr></thead><tbody>' +
+    items + "</tbody></table>" +
+    '<div class="cart-total" style="margin-bottom:0"><span>Итого</span><span>' + money(o.total) + "</span></div></div>" +
+    '<div class="card"><h3>Детали</h3>' +
+    "<p><strong>Клиент:</strong> " + esc(u ? u.name : "—") + "</p>" +
+    "<p><strong>Телефон:</strong> " + esc(u && u.phone ? u.phone : "не указан") + "</p>" +
+    "<p><strong>Адрес:</strong> " + esc(o.address) + "</p>" +
+    "<p><strong>Комментарий:</strong> " + esc(o.comment || "—") + "</p>" +
+    (o.closed ? "<p><strong>Закрыта:</strong> " + fmtDate(o.closed) + "</p>" : "") +
+    '<div class="row-actions" style="margin-top:20px">' +
+    '<button class="btn" data-action="repeat" data-id="' + o.id + '">Повторить заказ</button>' +
+    (canCancel ? '<button class="btn btn--danger" data-action="cancel" data-id="' + o.id + '">Отменить</button>' : "") +
+    "</div></div></div></div></section>";
+}
+
+function pageMyReviews() {
+  if (!me()) { location.hash = "#/login"; return ""; }
+  var mine = db.reviews.filter(function (r) { return r.user === db.session; }).slice().reverse();
+  var body = mine.length ? mine.map(function (rv) {
+    var s = svc(rv.service);
+    return '<div class="review"><div class="review__head"><span class="review__author">' + esc(s ? s.name : "") +
+      '</span><span class="rating">★ ' + rv.rating + "</span></div>" +
+      '<div class="review__date">' + fmtDate(rv.created) + " · " +
+      (rv.published ? '<span style="color:var(--success)">опубликован</span>' : '<span style="color:#9a6b00">на модерации</span>') +
+      "</div><p>" + esc(rv.text || "Без комментария") + "</p></div>";
+  }).join("") : '<div class="empty"><h3>Отзывов пока нет</h3><p>Оцените качество услуг после выполнения заказа.</p><a class="btn" href="#/services">Каталог услуг</a></div>';
+
+  return '<div class="page-head"><div class="container">' +
+    '<div class="breadcrumb"><a href="#/cabinet">Личный кабинет</a> / Мои отзывы</div>' +
+    "<h1>Мои отзывы</h1><p>Отзывы появляются на сайте после проверки модератором</p></div></div>" +
+    '<section class="section"><div class="container">' + body + "</div></section>";
+}
+
+function pageAbout() {
+  return '<div class="page-head"><div class="container"><h1>О компании</h1>' +
+    "<p>Клининговая компания CleanPro — профессиональная уборка с 2018 года</p></div></div>" +
+    '<section class="section"><div class="container"><div class="grid grid--2">' +
+    '<div class="card"><h3>Кто мы</h3><p>CleanPro — служба клининга, которая выполняет уборку квартир, офисов, химчистку мебели и мойку бытовой техники. Мы работаем по договору, используем профессиональное оборудование и сертифицированную химию.</p></div>' +
+    '<div class="card"><h3>Как мы работаем</h3><p>Вы выбираете услугу в каталоге, оформляете заявку в личном кабинете — и мы связываемся с вами для подтверждения времени. После выполнения работ вы оставляете отзыв.</p></div>' +
+    '<div class="card"><h3>Наши принципы</h3><p>Честная цена без скрытых доплат, пунктуальность, безопасные средства для детей и животных, уважение к имуществу клиента.</p></div>' +
+    '<div class="card"><h3>Гарантии</h3><p>Если после уборки остались недочёты — устраняем их бесплатно в течение 24 часов после обращения.</p></div>' +
+    "</div>" +
+    '<div class="stats" style="margin-top:32px">' +
+    '<div class="stat"><div class="stat__value">8 лет</div><div class="stat__label">на рынке</div></div>' +
+    '<div class="stat"><div class="stat__value">4 500+</div><div class="stat__label">выполненных заказов</div></div>' +
+    '<div class="stat"><div class="stat__value">24</div><div class="stat__label">специалиста в штате</div></div>' +
+    '<div class="stat"><div class="stat__value">4.8</div><div class="stat__label">средняя оценка</div></div>' +
+    "</div></div></section>";
+}
+
+function pageContacts() {
+  return '<div class="page-head"><div class="container"><h1>Контакты</h1><p>Свяжитесь с нами любым удобным способом</p></div></div>' +
+    '<section class="section"><div class="container"><div class="grid grid--3">' +
+    '<div class="card"><h3>Телефон</h3><p>+7 (495) 123-45-67<br>Ежедневно с 8:00 до 22:00</p></div>' +
+    '<div class="card"><h3>E-mail</h3><p>info@cleanpro.ru<br>zakaz@cleanpro.ru</p></div>' +
+    '<div class="card"><h3>Адрес офиса</h3><p>г. Москва,<br>ул. Чистая, д. 12, офис 45</p></div></div>' +
+    '<div class="card mt"><h3>Как оформить заказ</h3>' +
+    "<p>1. Зарегистрируйтесь на сайте.<br>2. Выберите услуги в каталоге или рассчитайте стоимость в калькуляторе.<br>" +
+    "3. Оформите заявку и дождитесь звонка оператора.<br>4. Следите за статусом работ в личном кабинете.</p>" +
+    '<div style="margin-top:16px"><a class="btn" href="#/register">Зарегистрироваться</a></div></div>' +
+    "</div></section>";
+}
+
+function pageLogin() {
+  return '<div class="page-head"><div class="container"><h1>Вход в аккаунт</h1>' +
+    "<p>Войдите, чтобы оформлять заявки и следить за их статусом</p></div></div>" +
+    '<section class="section"><div class="container">' +
+    '<form class="form card" data-form="login">' +
+    '<div class="form__row"><label>E-mail</label><input class="input" name="email" type="text" placeholder="you@example.com"><div class="form__error" data-err="email"></div></div>' +
+    '<div class="form__row"><label>Пароль</label><input class="input" name="password" type="password" placeholder="••••••"><div class="form__error" data-err="password"></div></div>' +
+    '<div class="form__row checkbox-row"><input type="checkbox" id="remember" name="remember"><label for="remember">Запомнить меня</label></div>' +
+    '<button class="btn btn--block" type="submit">Войти</button>' +
+    '<p style="margin-top:14px;color:var(--muted)">Нет аккаунта? <a href="#/register">Зарегистрироваться</a></p>' +
+    "</form></div></section>";
+}
+
+function pageRegister() {
+  return '<div class="page-head"><div class="container"><h1>Регистрация</h1>' +
+    "<p>Создайте аккаунт клиента за минуту</p></div></div>" +
+    '<section class="section"><div class="container">' +
+    '<form class="form card" data-form="register">' +
+    '<div class="form__row"><label>Имя</label><input class="input" name="name" placeholder="Иван Иванов"><div class="form__error" data-err="name"></div></div>' +
+    '<div class="form__row"><label>E-mail</label><input class="input" name="email" placeholder="you@example.com"><div class="form__error" data-err="email"></div></div>' +
+    '<div class="form__row"><label>Телефон</label><input class="input" name="phone" placeholder="+7 (999) 000-00-00"></div>' +
+    '<div class="form__row"><label>Пароль</label><input class="input" name="password" type="password" placeholder="Минимум 6 символов"><div class="form__error" data-err="password"></div></div>' +
+    '<div class="form__row"><label>Повторите пароль</label><input class="input" name="password2" type="password" placeholder="Повторите пароль"><div class="form__error" data-err="password2"></div></div>' +
+    '<button class="btn btn--block" type="submit">Зарегистрироваться</button>' +
+    '<p style="margin-top:14px;color:var(--muted)">Уже есть аккаунт? <a href="#/login">Войти</a></p>' +
+    "</form></div></section>";
+}
+
+function pageError(code, text) {
+  return '<div class="container"><div class="empty"><h3>' + code + " — " + esc(text) + "</h3>" +
+    '<a class="btn" href="#/">На главную</a></div></div>';
+}
+
+/* ============================================================
+   АДМИН-ПАНЕЛЬ
+   ============================================================ */
+function adminSidebar(active) {
+  var links = [
+    ["dashboard", "#/admin", "Дашборд"],
+    ["orders", "#/admin/orders", "Заявки"],
+    ["services", "#/admin/services", "Услуги"],
+    ["categories", "#/admin/categories", "Категории"],
+    ["reviews", "#/admin/reviews", "Отзывы"],
+    ["users", "#/admin/users", "Пользователи"]
+  ];
+  return '<aside class="sidebar"><div class="sidebar__title">Управление</div>' +
+    links.map(function (l) {
+      return '<a href="' + l[1] + '" class="' + (active === l[0] ? "active" : "") + '">' + l[2] + "</a>";
+    }).join("") +
+    '<div class="sidebar__title">Сайт</div>' +
+    '<a href="#/">На главную</a><a href="#/cabinet">Личный кабинет</a>' +
+    '<a href="#" data-action="reset-demo" style="color:var(--danger)">Сбросить демо-данные</a></aside>';
+}
+
+function adminWrap(active, content) {
+  if (!isAdmin()) return pageError(403, "Доступ только для администратора");
+  return '<div class="container"><div class="layout">' + adminSidebar(active) + "<section>" + content + "</section></div></div>";
+}
+
+function adminDashboard() {
+  var total = db.orders.length;
+  var newN = db.orders.filter(function (o) { return o.status === "new"; }).length;
+  var doneN = db.orders.filter(function (o) { return o.status === "done"; }).length;
+  var revenue = db.orders.reduce(function (s, o) { return s + (o.status === "done" ? o.total : 0); }, 0);
+  var clients = db.users.filter(function (u) { return u.role === "client"; }).length;
+  var pending = db.reviews.filter(function (r) { return !r.published; }).length;
+
+  var days = {};
+  db.orders.forEach(function (o) {
+    var d = String(o.created).slice(0, 10);
+    days[d] = (days[d] || 0) + 1;
+  });
+  var keys = Object.keys(days).sort().slice(-7);
+  var weekly = keys.length
+    ? '<table class="table" style="box-shadow:none;margin-top:10px"><thead><tr><th>Дата</th><th>Количество</th></tr></thead><tbody>' +
+      keys.map(function (k) { return "<tr><td>" + k.split("-").reverse().join(".") + "</td><td>" + days[k] + "</td></tr>"; }).join("") +
+      "</tbody></table>"
+    : '<p style="color:var(--muted)">Заявок пока нет.</p>';
+
+  var recent = db.orders.slice().sort(function (a, b) { return b.id - a.id; }).slice(0, 5);
+  var recentHtml = recent.length
+    ? '<table class="table" style="box-shadow:none;margin-top:10px"><thead><tr><th>№</th><th>Дата</th><th>Клиент</th><th>Сумма</th><th>Статус</th></tr></thead><tbody>' +
+      recent.map(function (o) {
+        var u = user(o.user);
+        return "<tr><td><a href=\"#/admin/order/" + o.id + '">№' + o.id + "</a></td><td>" + fmtDate(o.created) + "</td><td>" +
+          esc(u ? u.name : "—") + "</td><td>" + money(o.total) + '</td><td><span class="badge-status badge-status--' + o.status + '">' + STATUS[o.status] + "</span></td></tr>";
+      }).join("") + "</tbody></table>"
+    : '<p style="color:var(--muted)">Заявок пока нет.</p>';
+
+  return adminWrap("dashboard",
+    '<div class="page-head" style="padding-top:0"><h1>Панель управления</h1><p>Общая статистика компании</p></div>' +
+    '<div class="stats">' +
+    '<div class="stat"><div class="stat__value">' + total + '</div><div class="stat__label">заявок всего</div></div>' +
+    '<div class="stat"><div class="stat__value">' + newN + '</div><div class="stat__label">новых заявок</div></div>' +
+    '<div class="stat"><div class="stat__value">' + doneN + '</div><div class="stat__label">выполнено</div></div>' +
+    '<div class="stat"><div class="stat__value">' + money(revenue) + '</div><div class="stat__label">выручка</div></div>' +
+    '<div class="stat"><div class="stat__value">' + clients + '</div><div class="stat__label">клиентов</div></div>' +
+    '<div class="stat"><div class="stat__value">' + db.services.length + '</div><div class="stat__label">услуг в каталоге</div></div>' +
+    '<div class="stat"><div class="stat__value">' + pending + '</div><div class="stat__label">отзывов на проверке</div></div>' +
+    '<div class="stat"><div class="stat__value">' + db.reviews.filter(function (r) { return r.published; }).length + '</div><div class="stat__label">опубликовано отзывов</div></div>' +
+    "</div>" +
+    '<div class="card" style="margin-bottom:24px"><h3>Заявки по дням</h3>' + weekly + "</div>" +
+    '<div class="card"><h3>Последние заявки</h3>' + recentHtml + "</div>");
+}
+
+function adminOrders(q) {
+  var list = db.orders.slice().sort(function (a, b) { return b.id - a.id; });
+  if (q.status) list = list.filter(function (o) { return o.status === q.status; });
+
+  var chips = '<a class="chip ' + (q.status ? "" : "chip--active") + '" href="#/admin/orders">Все</a>' +
+    Object.keys(STATUS).map(function (k) {
+      return '<a class="chip ' + (q.status === k ? "chip--active" : "") + '" href="#/admin/orders?status=' + k + '">' + STATUS[k] + "</a>";
+    }).join("");
+
+  var rows = list.map(function (o) {
+    var u = user(o.user);
+    return '<tr><td><strong>' + o.id + "</strong></td><td>" + fmtDate(o.created) + "</td><td>" + esc(u ? u.name : "—") +
+      '<br><span style="color:var(--muted);font-size:13px">' + esc(u ? (u.phone || u.email) : "") + "</span></td>" +
+      "<td>" + esc(o.address) + "</td><td>" + money(o.total) + '</td><td><span class="badge-status badge-status--' + o.status + '">' + STATUS[o.status] + "</span></td>" +
+      '<td><a class="btn btn--sm btn--ghost" href="#/admin/order/' + o.id + '">Открыть</a></td></tr>';
+  }).join("");
+
+  var body = list.length
+    ? '<table class="table"><thead><tr><th>№</th><th>Дата</th><th>Клиент</th><th>Адрес</th><th>Сумма</th><th>Статус</th><th></th></tr></thead><tbody>' + rows + "</tbody></table>"
+    : '<div class="empty"><h3>Заявок нет</h3><p>В этой категории заявки отсутствуют.</p></div>';
+
+  return adminWrap("orders",
+    '<div class="page-head" style="padding-top:0"><h1>Заявки</h1><p>Управление заказами клиентов · всего: ' + list.length + "</p></div>" +
+    '<div class="chips">' + chips + "</div>" + body);
+}
+
+function adminOrder(id) {
+  var o = order(id);
+  if (!o) return adminWrap("orders", pageError(404, "Заявка не найдена"));
+  var u = user(o.user);
+  var items = o.items.map(function (it) {
+    var s = svc(it.service);
+    return "<tr><td>" + esc(s ? s.name : "—") + "</td><td>" + it.q + "</td><td>" + money(it.price) +
+      "</td><td>" + money(it.price * it.q) + "</td></tr>";
+  }).join("");
+
+  var options = Object.keys(STATUS).map(function (k) {
+    return '<option value="' + k + '"' + (o.status === k ? " selected" : "") + ">" + STATUS[k] + "</option>";
+  }).join("");
+
+  return adminWrap("orders",
+    '<div class="page-head" style="padding-top:0"><div class="breadcrumb"><a href="#/admin/orders">Заявки</a> / №' + o.id + "</div>" +
+    "<h1>Заявка №" + o.id + "</h1><p>" + fmtDate(o.created) + "</p></div>" +
+    '<div class="grid grid--2" style="align-items:start">' +
+    '<div class="card"><h3>Состав</h3><table class="table" style="box-shadow:none;margin-top:10px">' +
+    '<thead><tr><th>Услуга</th><th>Кол-во</th><th>Цена</th><th>Сумма</th></tr></thead><tbody>' + items + "</tbody></table>" +
+    '<div class="cart-total" style="margin-bottom:0"><span>Итого</span><span>' + money(o.total) + "</span></div></div>" +
+    "<div>" +
+    '<div class="card" style="margin-bottom:18px"><h3>Клиент</h3><p><strong>' + esc(u ? u.name : "—") + "</strong></p>" +
+    "<p>E-mail: " + esc(u ? u.email : "") + "</p><p>Телефон: " + esc(u && u.phone ? u.phone : "не указан") + "</p></div>" +
+    '<div class="card" style="margin-bottom:18px"><h3>Объект</h3>' +
+    "<p><strong>Адрес:</strong> " + esc(o.address) + "</p><p><strong>Комментарий:</strong> " + esc(o.comment || "—") + "</p>" +
+    (o.closed ? "<p><strong>Закрыта:</strong> " + fmtDate(o.closed) + "</p>" : "") + "</div>" +
+    '<div class="card"><h3>Статус заявки</h3><form data-form="status" data-id="' + o.id + '">' +
+    '<div class="form__row"><label>Новый статус</label><select class="input" name="status">' + options + "</select></div>" +
+    '<button class="btn btn--block" type="submit">Обновить статус</button></form></div>' +
+    "</div></div>");
+}
+
+function adminServices() {
+  var rows = db.services.map(function (s) {
+    var c = cat(s.cat);
+    return "<tr><td><strong>" + esc(s.name) + '</strong><br><span style="color:var(--muted);font-size:13px">/service/' + s.slug + "</span></td>" +
+      "<td>" + esc(c ? c.name : "—") + "</td><td>" + money(s.price) + "</td><td>" + esc(s.unit) + "</td>" +
+      "<td>" + (s.active ? '<span class="badge-status badge-status--done">активна</span>' : '<span class="badge-status badge-status--cancelled">выключена</span>') + "</td>" +
+      '<td class="right"><span class="row-actions" style="justify-content:flex-end">' +
+      '<a class="btn btn--sm btn--ghost" href="#/admin/service/' + s.id + '">Изменить</a>' +
+      '<button class="btn btn--sm" data-action="svc-toggle" data-id="' + s.id + '">' + (s.active ? "Выключить" : "Включить") + "</button>" +
+      '<button class="btn btn--sm btn--danger" data-action="svc-delete" data-id="' + s.id + '">Удалить</button>' +
+      "</span></td></tr>";
+  }).join("");
+
+  return adminWrap("services",
+    '<div class="page-head" style="padding-top:0"><div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px">' +
+    "<div><h1>Услуги</h1><p>Каталог · всего: " + db.services.length + "</p></div>" +
+    '<a class="btn" href="#/admin/service/new">+ Добавить услугу</a></div></div>' +
+    '<table class="table"><thead><tr><th>Название</th><th>Категория</th><th>Цена</th><th>Ед.</th><th>Статус</th><th></th></tr></thead><tbody>' +
+    rows + "</tbody></table>");
+}
+
+function adminServiceForm(id) {
+  var isNew = id === "new";
+  var s = isNew ? { id: 0, cat: db.categories[0] ? db.categories[0].id : 1, name: "", desc: "", price: "", unit: "м²", duration: "", active: true, slug: "" }
+                 : svc(id);
+  if (!s) return adminWrap("services", pageError(404, "Услуга не найдена"));
+
+  var opts = db.categories.map(function (c) {
+    return '<option value="' + c.id + '"' + (c.id === s.cat ? " selected" : "") + ">" + esc(c.name) + "</option>";
+  }).join("");
+
+  return adminWrap("services",
+    '<div class="page-head" style="padding-top:0"><div class="breadcrumb"><a href="#/admin/services">Услуги</a> / ' +
+    (isNew ? "Новая услуга" : esc(s.name)) + "</div><h1>" + (isNew ? "Новая услуга" : esc(s.name)) + "</h1></div>" +
+    '<form class="form card" data-form="service" data-id="' + (isNew ? "new" : s.id) + '">' +
+    '<div class="form__row"><label>Название</label><input class="input" name="name" value="' + esc(s.name) + '"><div class="form__error" data-err="name"></div></div>' +
+    '<div class="form__row"><label>Категория</label><select class="input" name="cat">' + opts + "</select></div>" +
+    '<div class="form__row"><label>Описание</label><textarea class="input" rows="4" name="desc">' + esc(s.desc) + "</textarea></div>" +
+    '<div class="form__row"><label>Цена</label><input class="input" type="number" name="price" min="0" step="0.01" value="' + esc(s.price) + '"><div class="form__error" data-err="price"></div></div>' +
+    '<div class="form__row"><label>Единица измерения</label><input class="input" name="unit" value="' + esc(s.unit) + '" placeholder="м² / шт. / час"></div>' +
+    '<div class="form__row"><label>Продолжительность</label><input class="input" name="duration" value="' + esc(s.duration) + '" placeholder="от 2 часов"></div>' +
+    '<div class="form__row checkbox-row"><input type="checkbox" id="svc_active" name="active"' + (s.active ? " checked" : "") + '><label for="svc_active">Активна (видна в каталоге)</label></div>' +
+    '<button class="btn" type="submit">Сохранить</button> <a class="btn btn--ghost" href="#/admin/services">Отмена</a>' +
+    "</form>");
+}
+
+function adminCategories() {
+  var rows = db.categories.map(function (c) {
+    var n = db.services.filter(function (s) { return s.cat === c.id; }).length;
+    return "<tr><td><strong>" + esc(c.name) + "</strong></td><td>" + c.slug + "</td><td>" + n + "</td>" +
+      '<td class="right"><span class="row-actions" style="justify-content:flex-end">' +
+      '<button class="btn btn--sm btn--danger" data-action="cat-delete" data-id="' + c.id + '">Удалить</button>' +
+      "</span></td></tr>";
+  }).join("");
+
+  return adminWrap("categories",
+    '<div class="page-head" style="padding-top:0"><h1>Категории</h1><p>Разделы каталога услуг · всего: ' + db.categories.length + "</p></div>" +
+    '<div class="grid grid--2" style="align-items:start"><div>' +
+    '<table class="table"><thead><tr><th>Название</th><th>Slug</th><th>Услуг</th><th></th></tr></thead><tbody>' + rows + "</tbody></table></div>" +
+    '<form class="form card" data-form="category"><h3>Новая категория</h3>' +
+    '<div class="form__row"><label>Название</label><input class="input" name="name" placeholder="Например: Уборка коттеджей"><div class="form__error" data-err="name"></div></div>' +
+    '<div class="form__row"><label>Описание</label><textarea class="input" rows="3" name="desc" placeholder="Краткое описание"></textarea></div>' +
+    '<button class="btn btn--block" type="submit">Добавить категорию</button></form></div>');
+}
+
+function adminReviews() {
+  var list = db.reviews.slice().reverse();
+  var body = list.length ? list.map(function (r) {
+    var u = user(r.user), s = svc(r.service);
+    return '<div class="review"><div class="review__head"><span class="review__author">' + esc(u ? u.name : "—") + " — " + esc(s ? s.name : "—") +
+      '</span><span class="rating">★ ' + r.rating + "</span></div>" +
+      '<div class="review__date">' + fmtDate(r.created) + " · " +
+      (r.published ? '<span style="color:var(--success)">опубликован</span>' : '<span style="color:#9a6b00">на модерации</span>') +
+      "</div><p>" + esc(r.text || "Без комментария") + "</p>" +
+      '<div class="row-actions" style="margin-top:12px">' +
+      '<button class="btn btn--sm ' + (r.published ? "btn--ghost" : "") + '" data-action="rev-toggle" data-id="' + r.id + '">' +
+      (r.published ? "Скрыть" : "Опубликовать") + "</button>" +
+      '<button class="btn btn--sm btn--danger" data-action="rev-delete" data-id="' + r.id + '">Удалить</button>' +
+      "</div></div>";
+  }).join("") : '<div class="empty"><h3>Отзывов пока нет</h3></div>';
+
+  return adminWrap("reviews",
+    '<div class="page-head" style="padding-top:0"><h1>Отзывы</h1><p>Модерация отзывов клиентов · всего: ' + list.length + "</p></div>" + body);
+}
+
+function adminUsers() {
+  var rows = db.users.map(function (u) {
+    var n = db.orders.filter(function (o) { return o.user === u.id; }).length;
+    return "<tr><td><strong>" + esc(u.name) + "</strong></td><td>" + esc(u.email) + "</td><td>" + esc(u.phone || "—") + "</td>" +
+      "<td>" + (u.role === "admin" ? '<span class="badge-status badge-status--confirmed">админ</span>' : '<span class="badge-status badge-status--done">клиент</span>') + "</td>" +
+      "<td>" + String(u.created).slice(0, 10).split("-").reverse().join(".") + "</td><td>" + n + "</td>" +
+      '<td class="right"><button class="btn btn--sm btn--ghost" data-action="user-role" data-id="' + u.id + '">' +
+      (u.role === "admin" ? "Снять админа" : "Сделать админом") + "</button></td></tr>";
+  }).join("");
+
+  return adminWrap("users",
+    '<div class="page-head" style="padding-top:0"><h1>Пользователи</h1><p>Клиенты и администраторы · всего: ' + db.users.length + "</p></div>" +
+    '<table class="table"><thead><tr><th>Имя</th><th>E-mail</th><th>Телефон</th><th>Роль</th><th>Регистрация</th><th>Заявок</th><th></th></tr></thead><tbody>' +
+    rows + "</tbody></table>");
+}
+
+/* ============================================================
+   МАРШРУТИЗАЦИЯ И ОТРИСОВКА
+   ============================================================ */
+function parseHash() {
+  var raw = location.hash.replace(/^#/, "").replace(/^\//, "");
+  var query = {};
+  if (!raw) return { path: [], q: query };
+  var qi = raw.indexOf("?");
+  if (qi >= 0) {
+    raw.slice(qi + 1).split("&").forEach(function (pair) {
+      if (!pair) return;
+      var kv = pair.split("=");
+      query[decodeURIComponent(kv[0])] = decodeURIComponent((kv[1] || "").replace(/\+/g, " "));
+    });
+    raw = raw.slice(0, qi);
+  }
+  return { path: raw.split("/").filter(Boolean), q: query };
+}
+
+function renderNav() {
+  var h = parseHash(), p = h.path[0] || "";
+  var u = me();
+  var n = cartCount();
+  function cls(name) { return p === name ? "active" : ""; }
+
+  var html =
+    '<a href="#/services" class="' + cls("services") + '">Услуги</a>' +
+    '<a href="#/calculator" class="' + cls("calculator") + '">Расчёт стоимости</a>' +
+    '<a href="#/about" class="' + cls("about") + '">О компании</a>' +
+    '<a href="#/contacts" class="' + cls("contacts") + '">Контакты</a>' +
+    '<a href="#/cart" class="' + cls("cart") + '">Заявка <span class="badge">' + n + "</span></a>";
+
+  if (u) {
+    html += u.role === "admin"
+      ? '<a class="btn btn--sm" href="#/admin">Админ-панель</a>'
+      : '<a class="btn btn--sm" href="#/cabinet">Кабинет</a>';
+    html += '<a href="#" data-action="logout" class="nav__muted">Выйти</a>';
+  } else {
+    html += '<a href="#/login" class="' + cls("login") + '">Вход</a>';
+    html += '<a class="btn btn--sm" href="#/register">Регистрация</a>';
+  }
+  document.getElementById("nav").innerHTML = html;
+}
+
+function render() {
+  var h = parseHash(), p = h.path, q = h.q, html;
+
+  if (!p.length) html = pageHome();
+  else if (p[0] === "services") html = pageServices(q);
+  else if (p[0] === "service" && p[1]) html = pageService(p[1]);
+  else if (p[0] === "calculator") html = pageCalculator();
+  else if (p[0] === "cart") html = pageCart();
+  else if (p[0] === "checkout") html = pageCheckout();
+  else if (p[0] === "cabinet") html = pageCabinet();
+  else if (p[0] === "order" && p[1]) html = pageOrder(p[1]);
+  else if (p[0] === "my-reviews") html = pageMyReviews();
+  else if (p[0] === "about") html = pageAbout();
+  else if (p[0] === "contacts") html = pageContacts();
+  else if (p[0] === "login") html = pageLogin();
+  else if (p[0] === "register") html = pageRegister();
+  else if (p[0] === "admin") {
+    if (!p[1]) html = adminDashboard();
+    else if (p[1] === "order" && p[2]) html = adminOrder(p[2]);
+    else if (p[1] === "orders" && p[2]) html = adminOrder(p[2]);
+    else if (p[1] === "orders") html = adminOrders(q);
+    else if (p[1] === "service" && p[2]) html = adminServiceForm(p[2]);
+    else if (p[1] === "services" && p[2]) html = adminServiceForm(p[2]);
+    else if (p[1] === "services") html = adminServices();
+    else if (p[1] === "categories") html = adminCategories();
+    else if (p[1] === "reviews") html = adminReviews();
+    else if (p[1] === "users") html = adminUsers();
+    else html = pageError(404, "Страница не найдена");
+  } else html = pageError(404, "Страница не найдена");
+
+  if (html === null || html === undefined) html = "";
+  document.getElementById("app").innerHTML = html;
+  renderNav();
+  paintFlash();
+  document.getElementById("nav").classList.remove("open");
+  window.scrollTo(0, 0);
+}
+
+function go(hash) {
+  if (location.hash === hash) render();
+  else location.hash = hash;
+}
+
+/* ============================================================
+   ОБРАБОТЧИКИ СОБЫТИЙ
+   ============================================================ */
+function formData(form) {
+  var d = {};
+  Array.prototype.forEach.call(form.elements, function (el) {
+    if (!el.name) return;
+    if (el.type === "checkbox") d[el.name] = el.checked;
+    else if (el.type === "number") d[el.name] = el.value === "" ? "" : Number(el.value);
+    else d[el.name] = el.value;
+  });
+  return d;
+}
+function setErr(form, name, msg) {
+  var el = form.querySelector('[data-err="' + name + '"]');
+  if (el) el.textContent = msg || "";
+}
+function slugify(text) {
+  var map = { "а": "a", "б": "b", "в": "v", "г": "g", "д": "d", "е": "e", "ё": "e", "ж": "zh", "з": "z", "и": "i", "й": "y", "к": "k", "л": "l", "м": "m", "н": "n", "о": "o", "п": "p", "р": "r", "с": "s", "т": "t", "у": "u", "ф": "f", "х": "h", "ц": "c", "ч": "ch", "ш": "sh", "щ": "sch", "ъ": "", "ы": "y", "ь": "", "э": "e", "ю": "yu", "я": "ya", " ": "-", "_": "-", ".": "", ",": "" };
+  var out = "";
+  for (var i = 0; i < text.length; i++) {
+    var ch = text[i].toLowerCase();
+    out += (map[ch] !== undefined ? map[ch] : ch);
+  }
+  while (out.indexOf("--") >= 0) out = out.replace(/--/g, "-");
+  return out.replace(/^-+|-+$/g, "");
+}
+function nowISO() { return new Date().toISOString(); }
+
+document.addEventListener("click", function (e) {
+  var el = e.target.closest("[data-action]");
+  if (!el) return;
+  var action = el.getAttribute("data-action");
+  var id = Number(el.getAttribute("data-id"));
+
+  if (action === "logout") {
+    e.preventDefault();
+    db.session = null; save();
+    flash("Вы вышли из аккаунта.", "info");
+    go("#/");
+    return;
+  }
+  if (action === "reset-demo") {
+    e.preventDefault();
+    if (!confirm("Сбросить все данные демо-версии и вернуть стартовое состояние?")) return;
+    try { if (LS) LS.removeItem(KEY); } catch (err) {}
+    location.reload();
+    return;
+  }
+  if (action === "cart-remove") { delete db.cart[id]; save(); flash("Услуга удалена.", "info"); render(); return; }
+  if (action === "cart-clear") { db.cart = {}; save(); flash("Заявка очищена.", "info"); render(); return; }
+
+  if (action === "repeat") {
+    var o = order(id);
+    if (o) o.items.forEach(function (it) { db.cart[it.service] = (db.cart[it.service] || 0) + it.q; });
+    save();
+    flash("Услуги из заказа добавлены в заявку.", "success");
+    go("#/cart");
+    return;
+  }
+  if (action === "cancel") {
+    var oc = order(id);
+    if (oc && (oc.status === "new" || oc.status === "confirmed")) {
+      oc.status = "cancelled"; oc.closed = nowISO(); save();
+      flash("Заявка отменена.", "info");
+    } else flash("Отменить можно только новую или подтверждённую заявку.", "warning");
+    render();
+    return;
+  }
+
+  if (action === "svc-toggle") {
+    var s = svc(id); if (s) { s.active = !s.active; save(); flash("Статус услуги изменён.", "info"); render(); }
+    return;
+  }
+  if (action === "svc-delete") {
+    if (!confirm("Удалить услугу?")) return;
+    db.services = db.services.filter(function (x) { return x.id !== id; });
+    db.reviews = db.reviews.filter(function (r) { return r.service !== id; });
+    delete db.cart[id];
+    save(); flash("Услуга удалена.", "info"); render();
+    return;
+  }
+  if (action === "cat-delete") {
+    var used = db.services.some(function (x) { return x.cat === id; });
+    if (used) { flash("Нельзя удалить непустую категорию.", "warning"); return; }
+    db.categories = db.categories.filter(function (c) { return c.id !== id; });
+    save(); flash("Категория удалена.", "info"); render();
+    return;
+  }
+  if (action === "rev-toggle") {
+    var r = db.reviews.filter(function (x) { return x.id === id; })[0];
+    if (r) { r.published = !r.published; save(); flash("Статус отзыва изменён.", "info"); render(); }
+    return;
+  }
+  if (action === "rev-delete") {
+    if (!confirm("Удалить отзыв?")) return;
+    db.reviews = db.reviews.filter(function (x) { return x.id !== id; });
+    save(); flash("Отзыв удалён.", "info"); render();
+    return;
+  }
+  if (action === "user-role") {
+    var usr = user(id);
+    if (!usr) return;
+    if (usr.id === db.session) { flash("Нельзя изменить роль собственного аккаунта.", "warning"); return; }
+    usr.role = usr.role === "admin" ? "client" : "admin";
+    save();
+    flash(usr.role === "admin" ? "Пользователь назначен администратором." : "Роль изменена на клиента.", "success");
+    render();
+    return;
+  }
+});
+
+document.addEventListener("submit", function (e) {
+  var form = e.target.closest("[data-form]");
+  if (!form) return;
+  e.preventDefault();
+  var kind = form.getAttribute("data-form");
+  var d = formData(form);
+
+  if (kind === "filter") {
+    var parts = [];
+    if (d.category) parts.push("category=" + encodeURIComponent(d.category));
+    ["q", "price_min", "price_max", "sort"].forEach(function (k) {
+      if (d[k] !== "" && d[k] != null) parts.push(k + "=" + encodeURIComponent(d[k]));
+    });
+    go("#/services" + (parts.length ? "?" + parts.join("&") : ""));
+    return;
+  }
+
+  if (kind === "add") {
+    var sid = Number(form.getAttribute("data-id"));
+    var qty = Number(d.quantity) || 1;
+    if (qty <= 0) qty = 1;
+    if (!svc(sid)) { flash("Услуга недоступна.", "danger"); return; }
+    db.cart[sid] = (db.cart[sid] || 0) + qty;
+    save();
+    flash("«" + svc(sid).name + "» добавлена в заявку.", "success");
+    render();
+    return;
+  }
+
+  if (kind === "cart-update") {
+    var cid = Number(form.getAttribute("data-id"));
+    var q = Number(d.quantity);
+    if (!q || q <= 0) delete db.cart[cid]; else db.cart[cid] = q;
+    save(); flash("Заявка обновлена.", "success"); render();
+    return;
+  }
+
+  if (kind === "checkout") {
+    var errBox = form.querySelector('[data-err="address"]');
+    if (!d.address || !String(d.address).trim()) {
+      if (errBox) errBox.textContent = "Укажите адрес объекта";
+      return;
+    }
+    if (errBox) errBox.textContent = "";
+    var data = cartRows();
+    if (!data.rows.length) { go("#/services"); return; }
+    var oid = nextId("order");
+    db.orders.push({
+      id: oid, user: db.session, status: "new",
+      address: String(d.address).trim(), comment: String(d.comment || "").trim(),
+      total: data.total, created: nowISO(), closed: null,
+      items: data.rows.map(function (r) { return { service: r.s.id, q: r.q, price: r.s.price }; })
+    });
+    db.cart = {};
+    save();
+    flash("Заявка №" + oid + " принята в работу.", "success");
+    go("#/order/" + oid);
+    return;
+  }
+
+  if (kind === "review") {
+    var slug = form.getAttribute("data-slug");
+    var s = svcBySlug(slug);
+    if (!s || !me()) return;
+    var dup = db.reviews.some(function (r) { return r.user === db.session && r.service === s.id; });
+    if (dup) { flash("Вы уже оставляли отзыв на эту услугу.", "warning"); render(); return; }
+    db.reviews.push({
+      id: nextId("review"), user: db.session, service: s.id,
+      rating: Number(d.rating) || 5, text: String(d.text || "").trim(),
+      published: false, created: nowISO()
+    });
+    save();
+    flash("Спасибо! Отзыв отправлен на модерацию.", "success");
+    render();
+    return;
+  }
+
+  if (kind === "login") {
+    var email = String(d.email || "").trim().toLowerCase();
+    var found = null;
+    db.users.forEach(function (u) { if (u.email === email) found = u; });
+    if (!found || found.pass !== hashPass(String(d.password || ""))) {
+      flash("Неверный e-mail или пароль.", "danger");
+      return;
+    }
+    db.session = found.id; save();
+    flash("Здравствуйте, " + found.name + "!", "success");
+    go(found.role === "admin" ? "#/admin" : "#/cabinet");
+    return;
+  }
+
+  if (kind === "register") {
+    var ok = true;
+    setErr(form, "name", ""); setErr(form, "email", "");
+    setErr(form, "password", ""); setErr(form, "password2", "");
+    if (!String(d.name || "").trim()) { setErr(form, "name", "Укажите имя"); ok = false; }
+    var em = String(d.email || "").trim().toLowerCase();
+    if (!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(em)) { setErr(form, "email", "Некорректный e-mail"); ok = false; }
+    else if (db.users.some(function (u) { return u.email === em; })) { setErr(form, "email", "Пользователь с таким e-mail уже существует"); ok = false; }
+    if (String(d.password || "").length < 6) { setErr(form, "password", "Минимум 6 символов"); ok = false; }
+    if (d.password !== d.password2) { setErr(form, "password2", "Пароли не совпадают"); ok = false; }
+    if (!ok) return;
+
+    var nu = {
+      id: nextId("user"), name: String(d.name).trim(), email: em,
+      phone: String(d.phone || "").trim(), role: "client",
+      pass: hashPass(String(d.password)), created: nowISO()
+    };
+    db.users.push(nu);
+    db.session = nu.id;
+    save();
+    flash("Регистрация прошла успешно. Добро пожаловать!", "success");
+    go("#/cabinet");
+    return;
+  }
+
+  if (kind === "status") {
+    var oid2 = Number(form.getAttribute("data-id"));
+    var ord = order(oid2);
+    if (!ord) return;
+    ord.status = d.status;
+    if (d.status === "done" || d.status === "cancelled") ord.closed = nowISO();
+    else ord.closed = null;
+    save();
+    flash("Статус заявки обновлён.", "success");
+    render();
+    return;
+  }
+
+  if (kind === "service") {
+    var raw = form.getAttribute("data-id");
+    var name = String(d.name || "").trim();
+    var price = d.price;
+    setErr(form, "name", ""); setErr(form, "price", "");
+    var good = true;
+    if (!name) { setErr(form, "name", "Укажите название"); good = false; }
+    if (price === "" || isNaN(Number(price)) || Number(price) < 0) { setErr(form, "price", "Укажите корректную цену"); good = false; }
+    if (!good) return;
+
+    var newSlug = slugify(name);
+    var conflict = db.services.some(function (x) { return x.slug === newSlug && String(x.id) !== raw; });
+    if (conflict) { setErr(form, "name", "Услуга с таким названием уже существует"); return; }
+
+    var target = raw === "new" ? null : svc(raw);
+    var payload = {
+      name: name, slug: newSlug, cat: Number(d.cat),
+      desc: String(d.desc || "").trim(), price: Number(price),
+      unit: String(d.unit || "м²").trim() || "м²",
+      duration: String(d.duration || "").trim(),
+      active: !!d.active
+    };
+    if (target) {
+      Object.keys(payload).forEach(function (k) { target[k] = payload[k]; });
+      flash("Услуга обновлена.", "success");
+    } else {
+      payload.id = nextId("service");
+      db.services.push(payload);
+      flash("Услуга добавлена.", "success");
+    }
+    save();
+    go("#/admin/services");
+    return;
+  }
+
+  if (kind === "category") {
+    var cname = String(d.name || "").trim();
+    setErr(form, "name", "");
+    if (!cname) { setErr(form, "name", "Укажите название"); return; }
+    var cslug = slugify(cname);
+    if (db.categories.some(function (c) { return c.slug === cslug || c.name === cname; })) {
+      setErr(form, "name", "Категория с таким названием уже существует");
+      return;
+    }
+    var maxId = db.categories.reduce(function (m, c) { return Math.max(m, c.id); }, 0);
+    db.categories.push({ id: maxId + 1, name: cname, slug: cslug, description: String(d.desc || "").trim() });
+    save();
+    flash("Категория добавлена.", "success");
+    render();
+    return;
+  }
+});
+
+/* живой пересчёт калькулятора */
+document.addEventListener("input", function (e) {
+  if (e.target && e.target.hasAttribute && e.target.hasAttribute("data-qty")) recalc();
+});
+
+function recalc() {
+  var total = 0;
+  Array.prototype.forEach.call(document.querySelectorAll(".cart-row[data-price]"), function (row) {
+    var price = Number(row.getAttribute("data-price")) || 0;
+    var input = row.querySelector("[data-qty]");
+    var q = input && input.value ? Number(input.value) : 0;
+    if (q < 0) q = 0;
+    var sub = price * q;
+    total += sub;
+    var out = row.querySelector("[data-subtotal]");
+    if (out) out.textContent = money(sub);
+  });
+  var t = document.querySelector("[data-total]");
+  if (t) t.textContent = money(total);
+}
+
+/* меню и старт */
+document.getElementById("burger").addEventListener("click", function () {
+  document.getElementById("nav").classList.toggle("open");
+});
+window.addEventListener("hashchange", render);
+
+if (!location.hash) location.hash = "#/";
+render();
+recalc();
+
+
+</script>
+</body>
+</html>
